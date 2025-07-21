@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Bingo</title>
+    <link rel="stylesheet" href="bingo.css">
+</head>
+<body>
+<script>
+
+for (col = 1; col < 6; col++) {
+    for (row = 1; row < 16; row++) {
+        let ball = 15 * (col - 1) + row;
+        let topmarg = (50 * row - 50) + "px";
+        let leftmarg = (50 * col - 50) + "px";
+
+        if (ball < 16) {
+            var nummer = "B " + ball;
+            var ballcol = "ball_b";
+        } else if (ball < 31) {
+            var nummer = "I " + ball;
+            var ballcol = "ball_i";
+        } else if (ball < 46) {
+            var nummer = "N " + ball;
+            var ballcol = "ball_n";
+        } else if (ball < 61) {
+            var nummer = "G " + ball;
+            var ballcol = "ball_g";
+        } else {
+            var nummer = "O " + ball;
+            var ballcol = "ball_o";
+        }
+
+        let balldiv = "<div id='" + ball + "' class='ball " + ballcol + "' style='top: " + topmarg + "; left: " + leftmarg + "'>" + nummer + "</div>";
+        document.body.innerHTML += balldiv;
+    }
+}
+
+var balls = [];
+var drawn = [];
+
+for (i = 1; i < 76; i++) {
+    balls.push(i);
+}
+
+function choose() {
+
+    return balls[Math.floor(Math.random() * 75)];
+
+}
+
+function containsObject(obj, list) {
+    let i;
+    for (i = 0; i < list.length; i++) {
+        if (list[i] === obj) {
+            return true;
+        }
+    }
+
+    return false;
+}
+
+function draw() {
+
+    let ball = choose();
+
+    if (drawn.length < 75) {
+        while (containsObject(ball, drawn)) {
+            ball = choose();
+        }
+
+        drawn.push(ball);
+        document.getElementById(ball).style.display = "block";
+
+        if (ball < 16) {
+            var value = "B " + ball;
+            document.getElementById("drawn").className = "ball_b";
+        } else if (ball < 31) {
+            var value = "I " + ball;
+            document.getElementById("drawn").className = "ball_i";
+        } else if (ball < 46) {
+            var value = "N " + ball;
+            document.getElementById("drawn").className = "ball_n";
+        } else if (ball < 61) {
+            var value = "G " + ball;
+            document.getElementById("drawn").className = "ball_g";
+        } else {
+            var value = "O " + ball;
+            document.getElementById("drawn").className = "ball_o";
+        }
+
+        document.getElementById("drawn").innerHTML = value;
+
+    } else {
+        document.getElementById("drawn").className = "empty";
+        document.getElementById("drawn").innerHTML = "★";
+        //alert("Det er ikkje fleire kuler igjen");
+    }
+}
+</script>
+
+<button class="empty" onclick="draw()">Trekk ei kule</button>
+
+<div id="drawn" class="empty">★</div>
+
+</body>
+</html>
